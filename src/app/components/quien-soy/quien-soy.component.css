@@ -1,0 +1,12 @@
+#container {
+    width: 90%;
+}
+
+#about-me{
+    width: 45%;
+    background-color: rgb(212, 212, 212);
+}
+
+#game-details {
+    background-color: rgb(233, 233, 233);
+}

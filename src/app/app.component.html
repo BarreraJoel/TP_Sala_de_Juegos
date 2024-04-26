@@ -1,0 +1,29 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" aria-label="Ninth navbar example">
+    <div class="container-xl">
+        <a class="navbar-brand" routerLink="home">
+            <img src="../../../assets/img/logo.png" alt="logo" class="w-25">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample07XL"
+            aria-controls="navbarsExample07XL" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarsExample07XL">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" routerLink="home">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="sobre-mi">Sobre mi</a>
+                </li>
+            </ul>
+            <button class="btn btn-danger">Log out</button>
+            <button class="btn btn-danger" routerLink="login">Log in</button>
+            <a routerLink="home">
+                <img src="../../../assets/img/logo.png" class="w-25 h-25" alt="">
+            </a>
+        </div>
+    </div>
+</nav>
+
+<router-outlet />

@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "sala-de-juegos-9ea15": {
+      "hosting": {
+        "sala-de-juegos": [
+          "sala-de-juegos-9ea15"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "sala-de-juegos-9ea15"
+  }
+}
