@@ -1,7 +1,6 @@
-<app-formulario [email]="email" [password]="password" textoTitulo="INICIAR SESIÓN" textoBoton="Iniciar Sesión" (enviar)="loguear($event)">
+<app-formulario textoTitulo="REGISTRAR" textoBoton="Registrar" (enviar)="registrar($event)">
     <div class="text-center">
-        <p><a routerLink="" (click)="completarUsuario()">Utilizar un usuario existente</a></p>
-        <p>¿No está registrado? <a routerLink="/register">Registrar</a></p>
+        <p>¿Ya está registrado? <a routerLink="/login">Iniciar Sesión</a></p>
     </div>
 </app-formulario>
 

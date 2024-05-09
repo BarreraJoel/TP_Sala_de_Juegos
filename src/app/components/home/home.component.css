@@ -1,5 +1,10 @@
+#user{
+    width: 15%;
+    background-color: rgb(74, 74, 107);
+}
+
 #game-container {
-    width: 100%;
+    width: 85%;
     height: 50%;
     justify-content: space-around;
 }
