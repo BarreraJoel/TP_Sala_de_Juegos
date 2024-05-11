@@ -1,0 +1,56 @@
+<div class="container mt-3">
+    <div class="row clearfix">
+        <div class="col-lg-12">
+            <div class="card chat-app">
+                <div id="plist" class="people-list">
+                    <ul class="list-unstyled chat-list mt-2 mb-0">
+                        @for (usuario of usuarios; track usuario) {
+                            <li class="clearfix">
+                                <img src="../../../assets/img/usuarios/avatar7.png" alt="avatar">
+                                <div class="about">
+                                    <div class="name">{{ usuario.email }}</div>
+                                    <div class="status"> <i class="fa fa-circle offline"></i> left 7 mins ago </div>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+                <div class="chat">
+                    <div class="chat-header clearfix">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <img src="../../../assets/img/verificado.png" alt="grupo">
+                                <div class="chat-about">
+                                    <h6 class="m-b-0">USUARIOS VERIFICADOS</h6>
+                                    <small>Integrantes: {{usuarios.length}}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-history">
+                        <ul class="m-b-0">
+                            @for(mensaje of mensajes; track mensaje){
+                                <li class="clearfix">
+                                    <div class="message-data text-right text-light">
+                                        <span class="message-data-time">{{ mensaje.email_emisor }}</span>
+                                        <span class="message-data-time">{{ mensaje.fecha_hora | date: 'MM/dd/yyyy HH:mm' }}</span>
+                                        <img src="../../../assets/img/usuarios/avatar7.png" alt="avatar">
+                                    </div>
+                                    <div class="message other-message float-right">{{ mensaje.contenido }}</div>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="chat-message clearfix">
+                        <div class="input-group mb-0">
+                            <div class="input-group-prepend" (click)="enviarMensaje()">
+                                <span class="input-group-text bg-primary text-light h-100"><i class="fa fa-send"></i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="Escriba un mensaje" [(ngModel)]="contenido">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

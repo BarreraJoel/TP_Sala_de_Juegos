@@ -1,0 +1,18 @@
+<div class="modal fade show" id="exampleModal" tabindex="-1" role="dialog" style="display: block;" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <ng-content select="h5"></ng-content>
+            </div>
+
+            <div class="modal-body">
+                <ng-content select="#body"></ng-content>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" (click)="!mostrar" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

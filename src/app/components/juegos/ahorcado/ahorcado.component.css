@@ -1,0 +1,27 @@
+#container {
+    background-color: rgb(87, 143, 89);
+}
+
+#header h2 {
+    width: 90%;
+}
+
+#header a {
+    width: 10%;
+}
+
+#partida {
+    background-color: rgb(73, 102, 74);
+}
+
+#teclado {
+    background-color: rgb(73, 102, 74);
+}
+
+.letras {
+    margin-bottom: 5px;
+}
+
+td {
+    margin: 5px;
+}

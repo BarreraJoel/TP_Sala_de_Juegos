@@ -1,17 +1,21 @@
 import { Component, inject } from '@angular/core';
 import { User } from '@angular/fire/auth';
 import { AuthUsuarioService } from '../../services/auth-usuario.service';
+import { RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [],
+  imports: [
+    RouterOutlet,
+    RouterLink
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
-  protected usuario?: User;
   private _auth: AuthUsuarioService = inject(AuthUsuarioService);
+  protected usuario?: User;
 
   constructor() {
     this._auth.verficiarUsuario().subscribe(
@@ -21,8 +25,7 @@ export class HomeComponent {
         }
       },
       (error) => {
-        
+        console.log(error);
       });
   }
-
 }
