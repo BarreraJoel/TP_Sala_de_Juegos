@@ -12,7 +12,7 @@ export class UsuariosService {
   private path: string = "usuarios";
   private firestore: Firestore = inject(Firestore);
   private _auth: AuthUsuarioService = inject(AuthUsuarioService);
-  public usuarios: Observable<Usuario[]>;
+  private usuarios: Observable<Usuario[]>;
 
   constructor() {
     this.usuarios = collectionData(collection(this.firestore, this.path)) as Observable<Usuario[]>;
@@ -28,22 +28,22 @@ export class UsuariosService {
   }
 
   getUsuario(email: string) {
-    let usuario!: Usuario;
+    let usuario: Usuario = { email: "", password: "" };
 
-    this.usuarios.subscribe(
-      (next: Usuario[]) => {
-        for (const item of next) {
-          if (item.email == email)
-            usuario = item;
-          break;
+    return new Promise<Usuario>((resolve, reject)=>{
+      this.usuarios.subscribe(
+        (next: Usuario[]) => {
+          for (const item of next) {
+            if (item.email == email) {
+              resolve(item);
+            }
+          }
+        },
+        (error) => {
+          reject(error)
         }
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-
-    return usuario || null;
+      );
+    });
   }
 
 }

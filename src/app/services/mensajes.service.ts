@@ -13,7 +13,8 @@ export class MensajesService {
   private mensajes?: Observable<Mensaje[]>;
 
   constructor() {
-    this.mensajes = collectionData(query(collection(this.firestore, this.path), orderBy("fecha_hora", "asc"))) as Observable<Mensaje[]>;
+    this.mensajes = collectionData(query(collection(this.firestore, this.path), orderBy("fecha", "asc"))) as Observable<Mensaje[]>;
+    this.mensajes = collectionData(query(collection(this.firestore, this.path), orderBy("hora", "asc"))) as Observable<Mensaje[]>;
   }
 
   agregarMensaje(mensaje: Mensaje) {

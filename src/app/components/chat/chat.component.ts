@@ -4,16 +4,12 @@ import { Usuario } from '../../models/usuario';
 import { MensajesService } from '../../services/mensajes.service';
 import { Mensaje } from '../../models/mensaje';
 import { FormsModule } from '@angular/forms';
-import { DatePipe } from '@angular/common';
 import { AuthUsuarioService } from '../../services/auth-usuario.service';
 
 @Component({
   selector: 'app-chat',
   standalone: true,
-  imports: [
-    FormsModule,
-    DatePipe
-  ],
+  imports: [FormsModule],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.css'
 })
@@ -31,16 +27,24 @@ export class ChatComponent {
     this.cargarDatos();
   }
 
-  async cargarDatos() {
-
+  cargarDatos() {
     this._usuarios.getUsuarios().subscribe(
       (response: Usuario[]) => {
         this.usuarios = response;
+
+        this._auth.verficiarUsuario().subscribe(
+          (next) => {
+            if (next?.email) {
+              this._usuarios.getUsuario(next?.email)
+                .then((response: Usuario) => {
+                  this.usuario = response;
+                })
+            }
+          })
       },
       (error) => {
         console.log(error);
-      }
-    );
+      });
 
     this._mensajes.getMensajes()?.subscribe(
       (response: Mensaje[]) => {
@@ -50,32 +54,23 @@ export class ChatComponent {
         console.log(error);
       }
     );
-
-    this._auth.verficiarUsuario().subscribe(
-      (response) => {
-
-        console.log(response);
-        if (response?.email)
-          this.usuario = this._usuarios.getUsuario(response?.email);
-          console.log(this.usuario);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-
   }
 
   enviarMensaje() {
-    const fecha_hora_actual = new Date().toLocaleString();
+    if (this.contenido.length > 0) {
+      const fecha = new Date().toLocaleDateString();
+      const hora = new Date().toLocaleTimeString();
 
-    if (this.usuario)
-      // this._mensajes.agregarMensaje({
-      //   email_emisor: this.usuario.email,
-      //   contenido: this.contenido,
-      //   fecha_hora: fecha_hora_actual
-      // });
-      console.log(this.usuario);
+      if (this.usuario) {
+        this._mensajes.agregarMensaje({
+          email_emisor: this.usuario.email,
+          contenido: this.contenido,
+          fecha: fecha,
+          hora: hora
+        });
+      }
+      this.contenido = "";
+    }
   }
 
 }

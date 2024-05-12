@@ -10,6 +10,14 @@
     width: 10%;
 }
 
+.modal-content {
+    background-color: rgb(181, 166, 148);
+}
+
+#body {
+    background-color: rgb(173, 148, 121);
+}
+
 #partida {
     background-color: rgb(73, 102, 74);
 }

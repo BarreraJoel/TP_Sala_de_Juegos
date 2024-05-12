@@ -6,10 +6,9 @@
                     <ul class="list-unstyled chat-list mt-2 mb-0">
                         @for (usuario of usuarios; track usuario) {
                             <li class="clearfix">
-                                <img src="../../../assets/img/usuarios/avatar7.png" alt="avatar">
+                                <img src="../../../assets/img/usuario.png" alt="avatar">
                                 <div class="about">
                                     <div class="name">{{ usuario.email }}</div>
-                                    <div class="status"> <i class="fa fa-circle offline"></i> left 7 mins ago </div>
                                 </div>
                             </li>
                         }
@@ -22,7 +21,7 @@
                                 <img src="../../../assets/img/verificado.png" alt="grupo">
                                 <div class="chat-about">
                                     <h6 class="m-b-0">USUARIOS VERIFICADOS</h6>
-                                    <small>Integrantes: {{usuarios.length}}</small>
+                                    <small>INTEGRANTES: {{usuarios.length}}</small>
                                 </div>
                             </div>
                         </div>
@@ -32,11 +31,15 @@
                             @for(mensaje of mensajes; track mensaje){
                                 <li class="clearfix">
                                     <div class="message-data text-right text-light">
-                                        <span class="message-data-time">{{ mensaje.email_emisor }}</span>
-                                        <span class="message-data-time">{{ mensaje.fecha_hora | date: 'MM/dd/yyyy HH:mm' }}</span>
-                                        <img src="../../../assets/img/usuarios/avatar7.png" alt="avatar">
+                                        <span class="message-data-time"><i>{{ mensaje.fecha }}</i></span>
+                                        <span class="message-data-time"><b>{{ mensaje.email_emisor }}</b></span>
+                                        <img src="../../../assets/img/usuario.png" alt="avatar">
                                     </div>
-                                    <div class="message other-message float-right">{{ mensaje.contenido }}</div>
+                                    <div class="message other-message float-right">
+                                        {{ mensaje.contenido }}
+                                        <br>
+                                        <small><i><b>{{ mensaje.hora }}</b></i></small>
+                                    </div>
                                 </li>
                             }
                         </ul>

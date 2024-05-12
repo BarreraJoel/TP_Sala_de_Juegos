@@ -2,16 +2,12 @@ import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Ahorcado } from '../../../models/ahorcado';
 import { PartidasService } from '../../../services/partidas.service';
-import { EstadisticasComponent } from '../../../shared/components/estadisticas/estadisticas.component';
 import { AuthUsuarioService } from '../../../services/auth-usuario.service';
 
 @Component({
   selector: 'app-ahorcado',
   standalone: true,
-  imports: [
-    RouterLink,
-    EstadisticasComponent
-  ],
+  imports: [RouterLink],
   templateUrl: './ahorcado.component.html',
   styleUrl: './ahorcado.component.css'
 })
@@ -33,6 +29,7 @@ export class AhorcadoComponent {
   private email: string = "";
   protected aciertos: number = 0;
   protected mostrar: boolean = false;
+  protected reglas: boolean = false;
 
   constructor(private _ahorcado: PartidasService, private _auth: AuthUsuarioService) {
     this._auth.verficiarUsuario().subscribe(
@@ -119,10 +116,12 @@ export class AhorcadoComponent {
       }, 1000);
     }
     if (this.pierde) {
-      this._ahorcado.agregarPartidaAhorcado({
-        usuario: this.email,
-        palabras_acertadas: this.aciertos
-      });
+      if (this.aciertos > 0) {
+        this._ahorcado.agregarPartidaAhorcado({
+          usuario: this.email,
+          palabras_acertadas: this.aciertos
+        });
+      }
     }
   }
 

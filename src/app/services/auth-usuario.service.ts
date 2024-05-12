@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Usuario } from '../models/usuario';
-import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, user } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, authState } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +24,7 @@ export class AuthUsuarioService {
   }
 
   verficiarUsuario() {
-    return user(this.auth);
+    return authState(this.auth);
   }
 
 }

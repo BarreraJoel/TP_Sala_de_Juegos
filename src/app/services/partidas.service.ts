@@ -17,7 +17,7 @@ export class PartidasService {
 
   constructor() {
     this.partidasAhorcado = collectionData(query(collection(this.firestore, this.pathAhorcado), orderBy("palabras_acertadas", "desc"))) as Observable<Ahorcado[]>;
-    this.partidasMayorMenor = collectionData(collection(this.firestore, this.pathMayorMenor)) as Observable<MayorMenor[]>;
+    this.partidasMayorMenor = collectionData(query(collection(this.firestore, this.pathMayorMenor), orderBy("cartas_acertadas", "desc"))) as Observable<MayorMenor[]>;
   }
 
   agregarPartidaAhorcado(partida: Ahorcado) {
@@ -30,7 +30,7 @@ export class PartidasService {
   }
 
   agregarPartidaMayorMenor(partida: MayorMenor) {
-    const partidasMayorMenor = collection(this.firestore, this.pathAhorcado);
+    const partidasMayorMenor = collection(this.firestore, this.pathMayorMenor);
     return addDoc(partidasMayorMenor, partida);
   }
 

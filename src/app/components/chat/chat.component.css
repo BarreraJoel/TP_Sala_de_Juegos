@@ -38,7 +38,7 @@
 }
 
 .people-list .chat-list li:hover {
-    background: #efefef;
+    background: rgb(86, 108, 143);
     cursor: pointer
 }
 
@@ -127,19 +127,6 @@
     position: relative
 }
 
-.chat .chat-history .message:after {
-    bottom: 100%;
-    left: 7%;
-    border: solid transparent;
-    content: " ";
-    height: 0;
-    width: 0;
-    position: absolute;
-    pointer-events: none;
-    border-bottom-color: #fff;
-    border-width: 10px;
-    margin-left: -10px
-}
 
 .chat .chat-history .my-message {
     background: #efefef

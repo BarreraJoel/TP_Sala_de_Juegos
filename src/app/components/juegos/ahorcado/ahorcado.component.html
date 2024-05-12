@@ -1,20 +1,21 @@
 <div id="container" class="w-75 m-auto mt-5 mb-5 text-center border border-white rounded">
     <div id="header" class="d-flex w-100 m-auto justify-content-center align-items-center">
         <h2 class="text-light">AHORCADO</h2>
-        <button class="btn btn-primary" (click)="!mostrar = true">ESTADÍSTICAS</button>
+        <button class="btn btn-primary" (click)="reglas = true">REGLAS</button>
+        <button class="btn btn-primary" (click)="mostrar = true">ESTADÍSTICAS</button>
         <a routerLink="/home">
-            <img src="../../../../assets/img/close.png" alt="close" class="w-25 h-25">
+            <img src="../../../../assets/img/close.png" alt="close" class="w-50 h-50">
         </a>
     </div>
     <div id="ahorcado" class="w-75 m-auto mt-5 mb-5 d-flex flex-column rounded text-light">
         <div id="partida" class="d-flex flex-row mb-4 p-5 align-items-center rounded">
             <div id="img-fase" class=" w-20 h-100">
-                <img [src]="url_imagen" class="rounded-circle w-75 h-100" alt="fase_juego">
+                <img [src]="url_imagen" class="rounded w-75 h-100" alt="fase_juego">
             </div>
             <div id="juego" class=" w-75">
                 <div id="datos-partida" class="h-20">
-                    <p>Intentos restantes: {{ vidas }}</p>
-                    <p>Aciertos: {{ aciertos }}</p>
+                    <h5>INTENTOS RESTANTES: {{ vidas }}</h5>
+                    <h5>ACIERTOS: {{ aciertos }}</h5>
                 </div>
                 <div class="h-75 mb-4">
                     <h3 class="text-light">{{ palabraEnJuego }}</h3>
@@ -24,35 +25,37 @@
                     <b class="text-danger">FELICITACIONES!!!</b>
                 }
                 @else if(pierde) {
+                    <b class="text-light">LA PALABRA ERA {{ palabraElegida }}</b>
+                    <br>
                     <b class="text-danger">GAME OVER</b>
                     <br>
                     <button class="btn btn-danger" (click)="iniciarDatos()">JUGAR DE NUEVO</button>
                 }
                 @else {
-                    <button class="btn btn-danger" (click)="terminarPartida()">TERMINAR</button>
+                    <button class="btn btn-danger" (click)="terminarPartida()">TERMINAR PARTIDA</button>
                 }
             </div>
         </div>
-        <div id="teclado" class="w-100 rounded">
+        <div id="teclado" class="w-100 rounded" [hidden]="finalizado || pierde">
             <table id="opciones" class="w-100">
                 <tr class="letras">
                     @for(letra of letras; track letra) {
                         @if(letra <= "I") {
-                            <td class="btn btn-primary" (click)="jugarLetra(letra)" [class.disabled]="verificarLetra(letra)">{{ letra }}</td>
+                            <td class="btn btn-secondary" (click)="jugarLetra(letra)" [class.disabled]="verificarLetra(letra)">{{ letra }}</td>
                         }
                     }
                 </tr>
                 <tr class="letras">
                     @for(letra of letras; track letra) {
                         @if((letra >= "J" && letra <= "Q") || letra == "Ñ") {
-                            <td class="btn btn-primary" (click)="jugarLetra(letra)" [class.disabled]="verificarLetra(letra)">{{ letra }}</td>
+                            <td class="btn btn-secondary" (click)="jugarLetra(letra)" [class.disabled]="verificarLetra(letra)">{{ letra }}</td>
                         }
                     }
                 </tr>
                 <tr class="letras">
                     @for(letra of letras; track letra) {
                         @if(letra >= "R" && letra != "Ñ") {
-                            <td class="btn btn-primary" (click)="jugarLetra(letra)" [class.disabled]="verificarLetra(letra)">{{ letra }}</td>
+                            <td class="btn btn-secondary" (click)="jugarLetra(letra)" [class.disabled]="verificarLetra(letra)">{{ letra }}</td>
                         }
                     }
                 </tr>
@@ -60,39 +63,72 @@
         </div>
     </div>
     @if(mostrar) {
-        <app-estadisticas [mostrar]="mostrar">
-            <h5 class="text-light">ESTADÍSTICAS AHORCADO</h5>
-            <div id="body" class="w-75 m-auto rounded bg-danger">
-                <table class="text-light">
-                    <thead>
-                        <tr>
-                            <th>
-                                USUARIO
-                            </th>
-                            <th>
-                                PALABRAS ACERTADAS
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    @for(partida of partidas; track partida) {
-                        <tr>
-                            <td>{{ partida.usuario }}</td>
-                            <td>{{ partida.palabras_acertadas }}</td>
-                        </tr>
-                    }
-                    </tbody>
-                </table>
+        <div class="modal fade show" id="exampleModal" tabindex="-1" role="dialog" style="display: block;" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="text-light">ESTADÍSTICAS AHORCADO</h5>                
+                    </div>
+        
+                    <div class="modal-body">
+                        <div id="body" class="w-75 p-4 m-auto rounded">
+                            <table class="text-light">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            USUARIO
+                                        </th>
+                                        <th>
+                                            PALABRAS ACERTADAS
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                @for(partida of partidas; track partida) {
+                                    <tr>
+                                        <td>{{ partida.usuario }}</td>
+                                        <td>{{ partida.palabras_acertadas }}</td>
+                                    </tr>
+                                }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+        
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" (click)="mostrar = false" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
             </div>
-        </app-estadisticas>
+        </div>
+    }
+    @if(reglas) {
+        <div class="modal fade show" id="exampleModal" tabindex="-1" role="dialog" style="display: block;" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="text-light">REGLAS</h5>                
+                    </div>
+        
+                    <div class="modal-body">
+                        <div id="body" class="w-75 p-4 m-auto rounded text-light">
+                            <h4>OBJETIVO</h4>
+                            <p>El objetivo es adivinar la palabra oculta,</p>
+                            <p>para esto se cuenta con 6 intentos.</p>
+                            <p>Cada vez que se elija una letra que</p>
+                            <p>no corresponda a la palabra, se avanzará</p>
+                            <p>de fase (imagen) hasta agotar los intentos.</p>
+                        </div>
+                    </div>
+        
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" (click)="reglas = false" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     }
 </div>
-
-
-
-
-
-
 
 
 

@@ -10,6 +10,10 @@
 }
 
 .card {
+    padding: 10px;
+    border: 2px solid white;
+    color: white;
+    background-color: rgb(74, 74, 107);
     width: 20%;
 }
 
