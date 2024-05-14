@@ -1,0 +1,12 @@
+#container {
+    background-color: rgb(87, 143, 89);
+}
+
+#header h2 {
+    width: 90%;
+}
+
+#header a {
+    width: 10%;
+}
+

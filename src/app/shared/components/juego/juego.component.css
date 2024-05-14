@@ -1,0 +1,23 @@
+#container {
+    background-color: rgb(87, 143, 89);
+}
+
+#header h2 {
+    width: 90%;
+}
+
+#header a {
+    width: 10%;
+}
+
+.modal-content {
+    background-color: rgb(181, 166, 148);
+}
+
+#body {
+    background-color: rgb(173, 148, 121);
+}
+
+#partida {
+    background-color: rgb(69, 104, 153);
+}

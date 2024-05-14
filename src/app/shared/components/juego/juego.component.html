@@ -1,0 +1,15 @@
+<div id="container" class="w-75 m-auto mt-5 mb-5 text-center border border-white rounded">
+    <div id="header" class="d-flex w-100 m-auto justify-content-center align-items-center">
+        <h2 class="text-light">{{ titulo }}</h2>
+        <button class="btn btn-primary">REGLAS</button>
+        <button class="btn btn-primary">ESTADÍSTICAS</button>
+        <a routerLink="/home">
+            <img src="../../../../assets/img/close.png" alt="close" class="w-50 h-50">
+        </a>
+    </div>
+    <div id="juego" class="w-75 text-light m-auto mt-5 mb-5 d-flex flex-column rounded">
+        <div id="partida" class="w-100 d-flex flex-column m-auto mb-4 p-5 align-items-center rounded">
+            <ng-content select="#content"></ng-content>
+        </div>
+    </div>
+</div>

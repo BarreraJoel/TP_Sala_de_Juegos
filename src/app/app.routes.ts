@@ -16,6 +16,10 @@ export const routes: Routes = [
                 loadComponent: () => import('./components/juegos/mayor-o-menor/mayor-o-menor.component').then(c => c.MayorOMenorComponent)
             },
             {
+                path: "preguntados",
+                loadComponent: () => import('./components/juegos/preguntados/preguntados.component').then(c => c.PreguntadosComponent)
+            },
+            {
                 path: '',
                 pathMatch: 'full',
                 redirectTo: 'home'
