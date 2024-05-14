@@ -5,6 +5,7 @@ import { MensajesService } from '../../services/mensajes.service';
 import { Mensaje } from '../../models/mensaje';
 import { FormsModule } from '@angular/forms';
 import { AuthUsuarioService } from '../../services/auth-usuario.service';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-chat',
@@ -55,18 +56,17 @@ export class ChatComponent {
       }
     );
   }
-
+  
   enviarMensaje() {
     if (this.contenido.length > 0) {
-      const fecha = new Date().toLocaleDateString();
-      const hora = new Date().toLocaleTimeString();
-
+      const date: Date = new Date();
+      const fecha = formatDate(date,"dd/MM/yyyy HH:mm:ss", "en-US");
+      
       if (this.usuario) {
         this._mensajes.agregarMensaje({
           email_emisor: this.usuario.email,
           contenido: this.contenido,
-          fecha: fecha,
-          hora: hora
+          fecha: fecha
         });
       }
       this.contenido = "";

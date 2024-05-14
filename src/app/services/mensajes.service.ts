@@ -14,7 +14,6 @@ export class MensajesService {
 
   constructor() {
     this.mensajes = collectionData(query(collection(this.firestore, this.path), orderBy("fecha", "asc"))) as Observable<Mensaje[]>;
-    this.mensajes = collectionData(query(collection(this.firestore, this.path), orderBy("hora", "asc"))) as Observable<Mensaje[]>;
   }
 
   agregarMensaje(mensaje: Mensaje) {
