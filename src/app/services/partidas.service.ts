@@ -1,41 +1,52 @@
 import { Injectable, inject } from '@angular/core';
 import { Firestore, addDoc, collection, collectionData, orderBy, query } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { Ahorcado } from '../models/ahorcado';
-import { MayorMenor } from '../models/mayor-menor';
+import { Partida } from '../models/partida';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PartidasService {
 
-  private pathAhorcado: string = "ahorcado";
-  private pathMayorMenor: string = "mayor-menor";
   private firestore: Firestore = inject(Firestore);
-  private partidasAhorcado: Observable<Ahorcado[]>;
-  private partidasMayorMenor: Observable<MayorMenor[]>;
+  private partidasAhorcado: Observable<Partida[]>;
+  private partidasMayorMenor: Observable<Partida[]>;
+  private partidasPreguntados: Observable<Partida[]>;
+  private partidasJuegoReaccion: Observable<Partida[]>;
 
   constructor() {
-    this.partidasAhorcado = collectionData(query(collection(this.firestore, this.pathAhorcado), orderBy("palabras_acertadas", "desc"))) as Observable<Ahorcado[]>;
-    this.partidasMayorMenor = collectionData(query(collection(this.firestore, this.pathMayorMenor), orderBy("cartas_acertadas", "desc"))) as Observable<MayorMenor[]>;
+    this.partidasAhorcado = collectionData(query(collection(this.firestore, "ahorcado"), orderBy("aciertos", "desc"))) as Observable<Partida[]>;
+    this.partidasMayorMenor = collectionData(query(collection(this.firestore, "mayor-menor"), orderBy("aciertos", "desc"))) as Observable<Partida[]>;
+    this.partidasPreguntados = collectionData(query(collection(this.firestore, "preguntados"), orderBy("aciertos", "desc"))) as Observable<Partida[]>;
+    this.partidasJuegoReaccion = collectionData(query(collection(this.firestore, "juego-de-reaccion"), orderBy("aciertos", "desc"))) as Observable<Partida[]>;
   }
 
-  agregarPartidaAhorcado(partida: Ahorcado) {
-    const partidasAhorcado = collection(this.firestore, this.pathAhorcado);
-    return addDoc(partidasAhorcado, partida);
+  agregarPartida(partida: Partida, tipo: string) {
+    const partidas = collection(this.firestore, tipo);
+    return addDoc(partidas, partida);
   }
 
-  getPartidasAhorcado() {
-    return this.partidasAhorcado;
-  }
+  getPartidas(tipo: string): Observable<any> | null {
+    let partidas;
 
-  agregarPartidaMayorMenor(partida: MayorMenor) {
-    const partidasMayorMenor = collection(this.firestore, this.pathMayorMenor);
-    return addDoc(partidasMayorMenor, partida);
-  }
+    switch (tipo) {
+      case "ahorcado":
+        partidas = this.partidasAhorcado;
+        break;
+      case "mayor-menor":
+        partidas = this.partidasMayorMenor;
+        break;
+      case "preguntados":
+        partidas = this.partidasPreguntados;
+        break;
+      case "juego-de-reaccion":
+        partidas = this.partidasJuegoReaccion;
+        break;
+      default:
+        partidas = null;
+        break;
+    }
 
-  getPartidasMayorMenor() {
-    return this.partidasMayorMenor;
+    return partidas;
   }
-
 }

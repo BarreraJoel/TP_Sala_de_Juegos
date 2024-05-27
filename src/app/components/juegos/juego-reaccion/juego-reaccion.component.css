@@ -1,0 +1,13 @@
+#cuadrado {
+    width: 30%;
+    cursor: pointer;
+    -webkit-box-shadow: inset 0px 0px 66px -18px rgba(252, 240, 172, 1);
+    -moz-box-shadow: inset 0px 0px 66px -18px rgba(252, 240, 172, 1);
+    box-shadow: inset 0px 0px 66px -18px rgba(252, 240, 172, 1);
+}
+
+#boton {
+    background-color: rgb(186, 73, 32);
+    font-weight: bold;
+    color: white;
+}

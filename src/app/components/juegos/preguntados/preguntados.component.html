@@ -1,16 +1,114 @@
-<juego titulo="PREGUNTADOS">
-    <div id="content">
-        <h4 class="text-light">{{preguntaActual?.question}}</h4>
-        <div class="w-50 h-50">
-            <img [src]="preguntaActual?.img_url" class="w-100 h-50" alt="photo">
-        </div>
-        <ul>
-            @for (opcion of preguntaActual?.options; track $index) {
-                <li>
-                    {{opcion}}
-                </li>
+<juego titulo="PREGUNTADOS" (mostrarEstadisticas)="cambiarEstadisticas($event)" (mostrarReglas)="cambiarReglas($event)">
+    <div id="content" class="d-flex flex-column justify-content-center m-auto">
+        @if(!perdio && !gano) {
+            <div class="d-flex mb-1 w-100 justify-content-between">
+                <span class="text-light">VIDAS: {{vidas}}</span>
+                <span class="text-light">PREGUNTA {{preguntas.length-preguntasActuales.length}}/{{preguntas.length}}</span>
+                <span class="text-light">ACIERTOS: {{aciertos}}</span>
+            </div>
+
+            <div class="w-100 m-auto mb-1 bg-warning d-flex flex-row justify-content-center">
+                <h3 class="text-light">{{preguntaActual?.category?.toUpperCase()}}</h3>
+            </div>
+
+            <div id="pregunta" class="d-flex flex-row mb-2 w-100 justify-content-center">
+                <h4 class="text-light">{{preguntaActual?.question}}</h4>
+            </div>
+            
+            <div id="img-pregunta" class="w-50 h-50 m-auto mb-4">
+                <img [src]="preguntaActual?.img_url" class="rounded" alt="photo">
+            </div>
+            
+            @if(yaJugo) {
+                <div class="w-100">
+                    <h5 [ngStyle]="{ 'color': acierta ? 'rgb(91, 224, 67)': 'rgb(252, 104, 78)' }">
+                        {{acierta ? "CORRECTO": "INCORRECTO"}}
+                    </h5>
+                </div>
             }
-        </ul>
+            <div id="opciones" class="w-75 m-auto d-flex">
+                <ul class="list-unstyled d-flex w-100 flex-wrap ">       
+                    @for (opcion of preguntaActual?.options; track $index) {
+                        <li id="opcion" class="justify-content-around mb-3">
+                            @if(yaJugo) {
+                                <button class="w-100 btn p-3 border-3 border-light text-light" (click)="jugarOpcion(opcion)" [ngStyle]="{ 'background-color': verificarOpcion(opcion) ? 'rgb(91, 224, 67)': 'rgb(252, 104, 78)' }">
+                                    {{opcion}}
+                                </button>
+                            }
+                            @else {
+                                <button class="w-100 btn btn-light p-3 border-3 border-dark" (click)="jugarOpcion(opcion)">
+                                    {{opcion}}
+                                </button>
+                            }
+                        </li>
+                    }
+                </ul>
+            </div>
+            <button class="btn w-50 m-auto text-light" [ngStyle]="{'background-color':'rgb(252, 104, 78)'}" (click)="terminarPartida()">
+                TERMINAR PARTIDA
+            </button>
+        }
+        @else {
+            <div class="w-100 m-auto mb-1 d-flex flex-column justify-content-center">
+                <div class="d-flex flex-row mb-2 w-100 justify-content-center">
+                    <h3>{{gano ? "FELICITACIONES" : "GAME OVER"}}</h3>
+                </div>
+                <div class="d-flex flex-row mb-2 w-100 justify-content-center">
+                    <button class="btn w-100 m-auto text-light" [ngStyle]="{'background-color':'rgb(252, 104, 78)'}" (click)="iniciar()">
+                        JUGAR DE NUEVO
+                    </button>
+                </div>
+            </div>
+        }
     </div>
 
 </juego>
+
+@if(reglas || estadisticas) {
+    <div class="modal fade show" id="exampleModal" tabindex="-1" role="dialog" style="display: block;" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content text-center text-light" [ngStyle]="{'background-color':'rgb(181, 166, 148)'}">
+                <div class="modal-header">
+                    <h5>{{ reglas ? 'REGLAS' : 'ESTADISTICAS' }}</h5>
+                </div>
+
+                <div class="modal-body">
+                    <div id="body" class="w-75 p-4 m-auto rounded">
+                        @if(reglas) {
+                            <h4>OBJETIVO</h4>
+                            <p>El juego consiste en adivinar la respuesta de la pregunta.</p>
+                            <p>El jugador tiene 4 opciones y una de ellas es la correcta.</p>
+                            <p>Se cuenta con 3 vidas, una vez agotadas las vidas se termina la partida.</p>
+                        }
+                        @else {
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            USUARIO
+                                        </th>
+                                        <th>
+                                            PREGUNTAS ACERTADAS
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for(partida of partidas; track partida) {
+                                        <tr>
+                                            <td>{{ partida.usuario }}</td>
+                                            <td>{{ partida.aciertos }}</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" (click)="reglas ? cambiarReglas(false): cambiarEstadisticas(false)" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}

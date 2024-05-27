@@ -1,4 +1,4 @@
-<div id="container" class="w-100 vh-100 d-flex m-auto">
+<div id="container" class="w-full h-full d-flex m-auto">
     <aside id="user" class="text-light d-flex">
         <div id="data" class="d-flex w-100 mt-3 flex-column align-items-center">
             <img src="../../../assets/img/usuario.png" class="w-80 h-25" alt="foto-perfil">
@@ -11,36 +11,29 @@
             <img class="card-img-top" src="../../../assets/img/juegos/ahorcado.png" alt="Ahorcado">
             <div class="card-body">
                 <h5 class="card-title">AHORCADO</h5>
-                <a routerLink="ahorcado" class="btn btn-primary w-100">JUGAR</a>
+                <a routerLink="/juegos/ahorcado" class="btn btn-primary w-100">JUGAR</a>
             </div>
         </div>
         <div class="card">
             <img class="card-img-top" src="../../../assets/img/juegos/mayor_menor.png" alt="Mayor o menor">
             <div class="card-body">
                 <h5 class="card-title">MAYOR O MENOR</h5>
-                <a routerLink="mayor-menor" class="btn btn-primary w-100">JUGAR</a>
+                <a routerLink="/juegos/mayor-menor" class="btn btn-primary w-100">JUGAR</a>
             </div>
         </div>
         <div class="card">
             <img class="card-img-top" src="../../../assets/img/juegos/preguntados.png" alt="Preguntados">
             <div class="card-body">
                 <h5 class="card-title">PREGUNTADOS</h5>
-                <a routerLink="preguntados" class="btn btn-primary w-100">JUGAR</a>
+                <a routerLink="/juegos/preguntados" class="btn btn-primary w-100">JUGAR</a>
             </div>
         </div>
         <div class="card">
-            <img class="card-img-top" src="../../../assets/img/logo.png" alt="Juego personalizado">
+            <img class="card-img-top" src="../../../assets/img/juegos/juego_de_reaccion.png" alt="Juego de reaccion">
             <div class="card-body">
-                <h5 class="card-title">JUEGO 4</h5>
-                <a class="btn btn-primary w-100">JUGAR</a>
+                <h5 class="card-title">JUEGO DE REACCIÓN</h5>
+                <a routerLink="/juegos/juego-de-reaccion" class="btn btn-primary w-100">JUGAR</a>
             </div>
         </div>
     </div>
-</div>
-<div class="text-center">
-    <h4 class="text-light">LOS JUEGOS SE ABRIRÁN DEBAJO DE LA LISTA DE JUEGOS</h4>
-</div>
-
-<div class="w-100">
-    <router-outlet/>
 </div>

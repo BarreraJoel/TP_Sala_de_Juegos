@@ -1,17 +1,24 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Ahorcado } from '../../../models/ahorcado';
 import { PartidasService } from '../../../services/partidas.service';
 import { AuthUsuarioService } from '../../../services/auth-usuario.service';
+import { NgStyle } from '@angular/common';
+import { JuegoComponent } from '../../../shared/components/juego/juego.component';
+import { User } from '@angular/fire/auth';
+import { Partida } from '../../../models/partida';
 
 @Component({
   selector: 'app-ahorcado',
   standalone: true,
-  imports: [RouterLink],
+  imports: [
+    RouterLink,
+    JuegoComponent,
+    NgStyle
+  ],
   templateUrl: './ahorcado.component.html',
   styleUrl: './ahorcado.component.css'
 })
-export class AhorcadoComponent {
+export class AhorcadoComponent implements OnInit {
 
   protected letras: string[] = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "Ñ", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
   private path: string = "../../../../assets/img/juegos/ahorcado/";
@@ -25,35 +32,27 @@ export class AhorcadoComponent {
   protected finalizado: boolean = false;
   protected acertado: boolean = false;
   protected pierde: boolean = false;
-  protected partidas: Ahorcado[] = [];
-  private email: string = "";
+  protected partidas: Partida[] = [];
   protected aciertos: number = 0;
-  protected mostrar: boolean = false;
+  private usuario: User | null = null;
   protected reglas: boolean = false;
+  protected estadisticas: boolean = false;
 
   constructor(private _ahorcado: PartidasService, private _auth: AuthUsuarioService) {
-    this._auth.verficiarUsuario().subscribe(
-      (response) => {
-        if (response?.email)
-          this.email = response?.email;
-      },
-      (error) => {
-        console.log(error);
-      }
+    this._ahorcado.getPartidas("ahorcado")?.subscribe(
+      (response: Partida[]) => { this.partidas = response; },
+      (error) => { console.log(error); }
     );
-    this._ahorcado.getPartidasAhorcado().subscribe(
-      (response: Ahorcado[]) => {
-        this.partidas = response;
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+  }
+
+  async ngOnInit() {
+    this.usuario = this._auth.usuarioLogueado;
     this.iniciarDatos();
   }
 
   protected iniciarDatos() {
     this.finalizado = false;
+    this.acertado = false;
     this.pierde = false;
     this.letrasUsadas = [];
     this.palabraEnJuego = "";
@@ -116,11 +115,11 @@ export class AhorcadoComponent {
       }, 1000);
     }
     if (this.pierde) {
-      if (this.aciertos > 0) {
-        this._ahorcado.agregarPartidaAhorcado({
-          usuario: this.email,
-          palabras_acertadas: this.aciertos
-        });
+      if (this.aciertos > 0 && this.usuario?.email) {
+        this._ahorcado.agregarPartida({
+          usuario: this.usuario.email,
+          aciertos: this.aciertos
+        }, "ahorcado");
       }
     }
   }
@@ -131,17 +130,26 @@ export class AhorcadoComponent {
 
   protected terminarPartida() {
     if (this.aciertos > 0) {
-
-      this.finalizado = true;
-      this._ahorcado.agregarPartidaAhorcado({
-        usuario: this.email,
-        palabras_acertadas: this.aciertos
-      });
-      setTimeout(() => {
-        this.iniciarDatos();
-        this.aciertos = 0;
-      }, 1000);
+      if (this.aciertos > 0 && this.usuario?.email) {
+        this.finalizado = true;
+        this._ahorcado.agregarPartida({
+          usuario: this.usuario?.email,
+          aciertos: this.aciertos
+        }, "ahorcado");
+        setTimeout(() => {
+          this.iniciarDatos();
+          this.aciertos = 0;
+        }, 1000);
+      }
     }
+  }
+
+  cambiarEstadisticas(value: boolean): void {
+    this.estadisticas = value;
+  }
+
+  cambiarReglas(value: boolean): void {
+    this.reglas = value;
   }
 
 }

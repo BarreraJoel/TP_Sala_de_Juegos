@@ -2,7 +2,6 @@ import { Injectable, inject } from '@angular/core';
 import { Usuario } from '../models/usuario';
 import { Firestore, collection, collectionData, addDoc } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { AuthUsuarioService } from './auth-usuario.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +10,6 @@ export class UsuariosService {
 
   private path: string = "usuarios";
   private firestore: Firestore = inject(Firestore);
-  private _auth: AuthUsuarioService = inject(AuthUsuarioService);
   private usuarios: Observable<Usuario[]>;
 
   constructor() {
@@ -28,8 +26,6 @@ export class UsuariosService {
   }
 
   getUsuario(email: string) {
-    let usuario: Usuario = { email: "", password: "" };
-
     return new Promise<Usuario>((resolve, reject)=>{
       this.usuarios.subscribe(
         (next: Usuario[]) => {

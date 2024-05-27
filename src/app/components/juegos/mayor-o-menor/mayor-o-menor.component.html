@@ -1,71 +1,72 @@
-<div id="container" class="w-75 m-auto mt-5 mb-5 text-center border border-white rounded">
-    <div id="header" class="d-flex w-100 m-auto justify-content-center align-items-center">
-        <h2 class="text-light">MAYOR O MENOR</h2>
-        <button class="btn btn-primary" (click)="reglas = true">REGLAS</button>
-        <button class="btn btn-primary" (click)="mostrar = true">ESTADÍSTICAS</button>
-        <a routerLink="/home">
-            <img src="../../../../assets/img/close.png" alt="close" class="w-50 h-50">
-        </a>
-    </div>
-    <div id="mayor-menor" class="w-75 m-auto mt-5 mb-5 d-flex flex-column rounded text-light">
-        <div id="partida" class="w-100 d-flex flex-column m-auto mb-4 p-5 align-items-center rounded">
-            <div id="datos-partida" class="w-75 p-2 mb-5 bg-secondary rounded">
-                <h5>INTENTOS RESTANTES: {{ vidas }}</h5>
-                <h5>CARTAS ACERTADAS: {{ aciertos }} </h5>  
-                <h5>MAZO RESTANTE: {{ cartas.length }}</h5>
-            </div>
-            <div id="mesa" class="w-75">
-                <div class="m-auto mb-4 carta">
-                    <div class="card card-body text-danger border-2 border-dark">
-                        <h4>?</h4>
-                    </div>
+<juego titulo="MAYOR O MENOR" (mostrarEstadisticas)="cambiarEstadisticas($event)" (mostrarReglas)="cambiarReglas($event)">
+    <div id="content" class="d-flex w-75 flex-column justify-content-center m-auto">
+        <div id="datos-partida" class="w-100 p-2 mb-5 bg-secondary rounded">
+            <h5>INTENTOS RESTANTES: {{ vidas }}</h5>
+            <h5>CARTAS ACERTADAS: {{ aciertos }} </h5>  
+            <h5>MAZO RESTANTE: {{ cartas.length }}</h5>
+        </div>
+        <div class="w-100">
+            <div class="m-auto mb-4 carta">
+                <div class="card card-body text-danger border-2 border-dark">
+                    <h4>?</h4>
                 </div>
-                <div id="mesa" class="mb-4">
-                    <div id="table" class="bg-success p-4 w-100 m-auto rounded-pill">
-                        <h5>CARTA TIRADA</h5>
-                        <div class="carta m-auto card card-body text-danger border-2 border-dark bn-danger">
-                            <h4>{{ cartaTirada }}</h4>
-                        </div>
-                        @if(cartas.length < 47) {
-                            @if(acertado) {
-                                <h5 class="text-light">CORRECTO</h5>
-                            }
-                            @else {
-                                <h5 class="text-danger">INCORRECTO</h5>
-                            }
+            </div>
+            <div class="mb-4 w-100">
+                <div id="table" class="bg-success p-4 w-100 m-auto rounded-pill">
+                    <h5>CARTA TIRADA</h5>
+                    <div class="carta m-auto card card-body text-danger border-2 border-dark bn-danger">
+                        <h4>{{ cartaTirada }}</h4>
+                    </div>
+                    @if(cartas.length < 47) {
+                        @if(acertado) {
+                            <h5 class="text-light">CORRECTO</h5>
                         }
-                    </div>
+                        @else {
+                            <h5 class="text-danger">INCORRECTO</h5>
+                        }
+                    }
                 </div>
-                @if(!pierde) {
-                    <div id="opciones">
-                        <h4>LA PRÓXIMA CARTA ES</h4>
-                        <button class="btn btn-success" (click)="jugarCarta('MAYOR')">MAYOR</button>
-                        <button class="btn btn-danger" (click)="jugarCarta('MENOR')">MENOR</button>
-                        <br>
-                        <button class="btn btn-secondary" (click)="terminarPartida()">TERMINAR PARTIDA</button>
-                    </div>
-                }
-                @else {
-                    <div id="opciones">
-                        <h4 class="text-danger">GAME OVER</h4>
-                        <button class="btn btn-danger" (click)="iniciarDatos()">JUGAR OTRA VEZ</button>
-                    </div>
-                }
             </div>
+            @if(!pierde) {
+                <div id="opciones">
+                    <h4>LA PRÓXIMA CARTA ES</h4>
+                    <button class="btn btn-success" (click)="jugarCarta('MAYOR')">MAYOR</button>
+                    <button class="btn btn-danger" (click)="jugarCarta('MENOR')">MENOR</button>
+                    <br>
+                    <button class="btn btn-secondary" (click)="terminarPartida()">TERMINAR PARTIDA</button>
+                </div>
+            }
+            @else {
+                <div id="opciones">
+                    <h4 class="text-danger">GAME OVER</h4>
+                    <button class="btn btn-danger" (click)="iniciarDatos()">JUGAR OTRA VEZ</button>
+                </div>
+            }
         </div>
     </div>
+</juego>
 
-    @if(mostrar) {
-        <div class="modal fade show" id="exampleModal" tabindex="-1" role="dialog" style="display: block;" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="text-light">ESTADÍSTICAS MAYOR O MENOR</h5>                
-                    </div>
-        
-                    <div class="modal-body">
-                        <div id="body" class="w-75 p-4 m-auto rounded">
-                            <table class="text-light">
+@if(reglas || estadisticas) {
+    <div class="modal fade show" id="exampleModal" tabindex="-1" role="dialog" style="display: block;" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content text-center text-light" [ngStyle]="{'background-color':'rgb(181, 166, 148)'}">
+                <div class="modal-header">
+                    <h5>{{ reglas ? 'REGLAS' : 'ESTADISTICAS' }}</h5>
+                </div>
+
+                <div class="modal-body">
+                    <div id="body" class="w-75 p-4 m-auto rounded">
+                        @if(reglas) {
+                            <h4>OBJETIVO</h4>
+                            <p>El objetivo es adivinar si la carta siguiente</p>
+                            <p>es mayor o menor que la carta</p>
+                            <p>que se encuentra en la mesa,</p>
+                            <p>para esto se tienen 5 intentos.</p>
+                            <p>El mazo está compuesto por 48 cartas,</p>
+                            <p>nominadas del 1 al 12</p>
+                        }
+                        @else {
+                            <table>
                                 <thead>
                                     <tr>
                                         <th>
@@ -80,47 +81,19 @@
                                 @for(partida of partidas; track partida) {
                                     <tr>
                                         <td>{{ partida.usuario }}</td>
-                                        <td>{{ partida.cartas_acertadas }}</td>
+                                        <td>{{ partida.aciertos }}</td>
                                     </tr>
                                 }
                                 </tbody>
                             </table>
-                        </div>
+                        }
                     </div>
-        
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" (click)="mostrar = false" data-dismiss="modal">Cerrar</button>
-                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" (click)="reglas ? cambiarReglas(false): cambiarEstadisticas(false)" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
-    }
-
-    @if(reglas) {
-        <div class="modal fade show" id="exampleModal" tabindex="-1" role="dialog" style="display: block;" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="text-light">REGLAS</h5>                
-                    </div>
-        
-                    <div class="modal-body">
-                        <div id="body" class="w-75 p-4 m-auto rounded text-light">
-                            <h4>OBJETIVO</h4>
-                            <p>El objetivo es adivinar si la carta siguiente</p>
-                            <p>es mayor o menor que la carta</p>
-                            <p>que se encuentra en la mesa,</p>
-                            <p>para esto se tienen 5 intentos.</p>
-                            <p>El mazo está compuesto por 48 cartas,</p>
-                            <p>nominadas del 1 al 12</p>
-                        </div>
-                    </div>
-        
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" (click)="reglas = false" data-dismiss="modal">Cerrar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
-</div>
+    </div>
+}

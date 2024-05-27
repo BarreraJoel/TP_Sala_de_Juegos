@@ -6,6 +6,10 @@ export const routes: Routes = [
         path: 'home',
         loadComponent: () => import('./components/home/home.component').then(c => c.HomeComponent),
         ...canActivate(() => redirectUnauthorizedTo(["/login"])),
+    },
+    {
+        path: 'juegos',
+        ...canActivate(() => redirectUnauthorizedTo(["/login"])),
         children: [
             {
                 path: "ahorcado",
@@ -20,9 +24,13 @@ export const routes: Routes = [
                 loadComponent: () => import('./components/juegos/preguntados/preguntados.component').then(c => c.PreguntadosComponent)
             },
             {
+                path: "juego-de-reaccion",
+                loadComponent: () => import('./components/juegos/juego-reaccion/juego-reaccion.component').then(c => c.JuegoReaccionComponent)
+            },
+            {
                 path: '',
                 pathMatch: 'full',
-                redirectTo: 'home'
+                redirectTo: '/home'
             }
         ]
     },

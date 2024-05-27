@@ -1,0 +1,80 @@
+<juego titulo="JUEGO DE REACCIÓN" (mostrarEstadisticas)="cambiarEstadisticas($event)" (mostrarReglas)="cambiarReglas($event)">
+    <div id="content" class="w-100 d-flex flex-column justify-content-center m-auto">
+        @if(empezo) {
+            <div class="w-100 mb-4 d-flex justify-content-between">
+                <h4>VIDAS: {{vidas}}</h4>
+                <h4>TIEMPO RESTANTE: {{temporizador.toLocaleTimeString()}}</h4>
+                <h4>ACIERTOS: {{aciertos}}</h4>
+            </div>
+            <div id="grilla" class="w-100 d-flex flex-wrap justify-content-between">
+                @for (fila of grilla; track $index) {
+                    <div id="cuadrado" class="p-5 mb-3 m-auto rounded" [ngStyle]="{'background-color': $index === indiceCuadro  ? 'rgb(213, 217, 106)' : 'rgb(127, 129, 133)'}" (click)="verificarCuadro($index)">
+                        <p></p>
+                    </div>
+                }
+            </div>
+        }
+        @else if(termino){
+            <div class="w-50 m-auto mb-4">
+                <h4>{{aciertos > 0 && vidas > 0 ? "FELICIDADES":"GAME OVER"}}</h4>
+            </div>
+            <div class="w-50 m-auto mb-4">
+                <button id="boton" class="btn p-4" (click)="iniciar()">JUGAR DE NUEVO</button>
+            </div>
+        }
+        @else {
+            <div class="w-50 m-auto mb-4">
+                <button id="boton" class="btn p-4" (click)="iniciar()">EMPEZAR JUEGO</button>
+            </div>
+        }
+    </div>
+</juego>
+
+@if(reglas || estadisticas) {
+    <div class="modal fade show" id="exampleModal" tabindex="-1" role="dialog" style="display: block;" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content text-center text-light" [ngStyle]="{'background-color':'rgb(181, 166, 148)'}">
+                <div class="modal-header">
+                    <h5>{{ reglas ? 'REGLAS' : 'ESTADISTICAS' }}</h5>
+                </div>
+
+                <div class="modal-body">
+                    <div id="body" class="w-75 p-4 m-auto rounded">
+                        @if(reglas) {
+                            <h4>OBJETIVO</h4>
+                            <p>El objetivo consiste en tocar el cuadro cuando se ilumine.</p>
+                            <p>Se perderá una vida por cada cuadro tocado pero que no sea el indicado.</p>
+                            <p>El juego termina cuando se acaba el tiempo o las vidas</p>
+                        }
+                        @else {
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            USUARIO
+                                        </th>
+                                        <th>
+                                            ACIERTOS
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for(partida of partidas; track $index) {
+                                        <tr>
+                                            <td>{{ partida.usuario }}</td>
+                                            <td>{{ partida.aciertos }}</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" (click)="reglas ? cambiarReglas(false): cambiarEstadisticas(false)" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}

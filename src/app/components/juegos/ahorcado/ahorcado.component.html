@@ -1,14 +1,6 @@
-<div id="container" class="w-75 m-auto mt-5 mb-5 text-center border border-white rounded">
-    <div id="header" class="d-flex w-100 m-auto justify-content-center align-items-center">
-        <h2 class="text-light">AHORCADO</h2>
-        <button class="btn btn-primary" (click)="reglas = true">REGLAS</button>
-        <button class="btn btn-primary" (click)="mostrar = true">ESTADÍSTICAS</button>
-        <a routerLink="/home">
-            <img src="../../../../assets/img/close.png" alt="close" class="w-50 h-50">
-        </a>
-    </div>
-    <div id="ahorcado" class="w-75 m-auto mt-5 mb-5 d-flex flex-column rounded text-light">
-        <div id="partida" class="d-flex flex-row mb-4 p-5 align-items-center rounded">
+<juego titulo="AHORCADO" (mostrarEstadisticas)="cambiarEstadisticas($event)" (mostrarReglas)="cambiarReglas($event)">
+    <div id="content" class="d-flex w-100 flex-column justify-content-center m-auto">
+        <div id="partida" class="d-flex flex-row mb-4 w-100 p-5 align-items-center rounded">
             <div id="img-fase" class=" w-20 h-100">
                 <img [src]="url_imagen" class="rounded w-75 h-100" alt="fase_juego">
             </div>
@@ -21,13 +13,16 @@
                     <h3 class="text-light">{{ palabraEnJuego }}</h3>
                 </div>
 
-                @if(finalizado) {
-                    <b class="text-danger">FELICITACIONES!!!</b>
+                @if(acertado) {
+                    <b [ngStyle]="{'color': 'rgb(91, 224, 67)'}">CORRECTO</b>
+                }
+                @else if(finalizado) {
+                    <b [ngStyle]="{'color': 'rgb(91, 224, 67)'}">FELICITACIONES!!!</b>
                 }
                 @else if(pierde) {
                     <b class="text-light">LA PALABRA ERA {{ palabraElegida }}</b>
                     <br>
-                    <b class="text-danger">GAME OVER</b>
+                    <b [ngStyle]="{'color': 'rgb(252, 104, 78)'}">GAME OVER</b>
                     <br>
                     <button class="btn btn-danger" (click)="iniciarDatos()">JUGAR DE NUEVO</button>
                 }
@@ -60,19 +55,30 @@
                     }
                 </tr>
             </table>
-        </div>
+        </div>        
     </div>
-    @if(mostrar) {
-        <div class="modal fade show" id="exampleModal" tabindex="-1" role="dialog" style="display: block;" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="text-light">ESTADÍSTICAS AHORCADO</h5>                
-                    </div>
-        
-                    <div class="modal-body">
-                        <div id="body" class="w-75 p-4 m-auto rounded">
-                            <table class="text-light">
+</juego>
+
+@if(reglas || estadisticas) {
+    <div class="modal fade show" id="exampleModal" tabindex="-1" role="dialog" style="display: block;" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content text-center text-light" [ngStyle]="{'background-color':'rgb(181, 166, 148)'}">
+                <div class="modal-header">
+                    <h5>{{ reglas ? 'REGLAS' : 'ESTADISTICAS' }}</h5>
+                </div>
+
+                <div class="modal-body">
+                    <div id="body" class="w-75 p-4 m-auto rounded">
+                        @if(reglas) {
+                            <h4>OBJETIVO</h4>
+                            <p>El objetivo es adivinar la palabra oculta,</p>
+                            <p>para esto se cuenta con 6 intentos.</p>
+                            <p>Cada vez que se elija una letra que</p>
+                            <p>no corresponda a la palabra, se avanzará</p>
+                            <p>de fase (imagen) hasta agotar los intentos.</p>
+                        }
+                        @else {
+                            <table>
                                 <thead>
                                     <tr>
                                         <th>
@@ -87,49 +93,19 @@
                                 @for(partida of partidas; track partida) {
                                     <tr>
                                         <td>{{ partida.usuario }}</td>
-                                        <td>{{ partida.palabras_acertadas }}</td>
+                                        <td>{{ partida.aciertos }}</td>
                                     </tr>
                                 }
                                 </tbody>
                             </table>
-                        </div>
+                        }
                     </div>
-        
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" (click)="mostrar = false" data-dismiss="modal">Cerrar</button>
-                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" (click)="reglas ? cambiarReglas(false): cambiarEstadisticas(false)" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
-    }
-    @if(reglas) {
-        <div class="modal fade show" id="exampleModal" tabindex="-1" role="dialog" style="display: block;" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="text-light">REGLAS</h5>                
-                    </div>
-        
-                    <div class="modal-body">
-                        <div id="body" class="w-75 p-4 m-auto rounded text-light">
-                            <h4>OBJETIVO</h4>
-                            <p>El objetivo es adivinar la palabra oculta,</p>
-                            <p>para esto se cuenta con 6 intentos.</p>
-                            <p>Cada vez que se elija una letra que</p>
-                            <p>no corresponda a la palabra, se avanzará</p>
-                            <p>de fase (imagen) hasta agotar los intentos.</p>
-                        </div>
-                    </div>
-        
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" (click)="reglas = false" data-dismiss="modal">Cerrar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
-</div>
-
-
-
-
+    </div>
+}
